@@ -27,3 +27,4 @@ go.work.sum
 /.idea/vcs.xml
 /.idea/gnome-wallpaper.iml
 /.idea/.gitignore
+/gnome-wallpaper
