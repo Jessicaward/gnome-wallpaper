@@ -14,7 +14,7 @@ So, you don't want to run this every 5 mins lol, so register a cronjob like so.
 Add the following to your crontab list (`crontab -e`).
 
 ```cron
-*/5 * * * * /path/to/exec/gnome-wallpaper /path/to/wallpapers >> ~/wallpaper_changer.log 2>&1
+0 * * * * env DISPLAY=:0 DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/$(id -u)/bus XDG_SESSION_TYPE=wayland /path/to/exec/gnome-wallpaper /path/to/wallpapers >> ~/wallpaper_changer.log 2>&1
 ```
 
 ## Troubleshooting
