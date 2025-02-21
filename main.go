@@ -1,14 +1,49 @@
 package main
 
 import (
+	"fmt"
 	"log"
+	"math/rand"
+	"os"
 	"os/exec"
 	"strings"
 )
 
 func main() {
-	imagePath := "TODO REPLACE ME"
+	if len(os.Args) < 2 {
+		log.Fatal("Please provide a directory path as an argument")
+	}
+	directoryPath := os.Args[1]
+	imageUriPrefix := "file://"
+
+	randomImagePath, err := getRandomImagePathInDirectory(directoryPath)
+	if err != nil {
+		log.Fatalf("Failed to get random image from directory (%s): %v\n", err, directoryPath)
+	}
+	log.Printf("Random image path: %s\n", randomImagePath)
+	imagePath := imageUriPrefix + randomImagePath
 	changeWallpaper(imagePath)
+}
+
+func getRandomImagePathInDirectory(directoryPath string) (string, error) {
+	files, err := os.ReadDir(directoryPath)
+	if err != nil {
+		return "", err
+	}
+
+	// filter out directories
+	var fileList []os.DirEntry
+	for _, f := range files {
+		if !f.IsDir() {
+			fileList = append(fileList, f)
+		}
+	}
+	if len(fileList) == 0 {
+		return "", fmt.Errorf("no files found")
+	}
+
+	//pick a random file
+	return directoryPath + "/" + fileList[rand.Intn(len(fileList))].Name(), nil
 }
 
 // We have to change wallpaper depending on colour scheme :(
